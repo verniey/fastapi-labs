@@ -13,26 +13,15 @@ class DishCreate(DishBase):
     price: Decimal
 
 class Dish(DishBase):
-    id: UUID
-    price: str  # Custom field to represent price as a formatted string
+    id:  UUID
+    price: Decimal  # Custom field to represent price as a formatted string
 
     class Config:
         orm_mode = True
         from_attributes = True
 
-
-
-
-
-
-
-
-
-
-class DishUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[Decimal] = None
+class DishUpdate(DishBase):
+    price: Decimal  # Assuming that the price is stored as a Decimal type
 
 
 
@@ -44,9 +33,7 @@ class SubmenuCreate(SubmenuBase):
     pass
 
 class Submenu(SubmenuBase):
-    id: UUID
-    menu_id: UUID
-
+    id: UUID   
     dishes_count: int = 0
 
 class SubmenuUpdate(BaseModel):
@@ -54,24 +41,25 @@ class SubmenuUpdate(BaseModel):
     description: str
 
 
-
 class MenuBase(BaseModel):
     title: str
-    description: str 
-
+    description: Optional[str] = None
 
 class MenuCreate(MenuBase):
     pass
 
-class MenuUpdate(MenuBase):
-    pass
 
+class MenuUpdate(BaseModel):
+    title: str
+    description: str
 
-
-class Menu(MenuBase):
-    id: UUID 
+class Menu(BaseModel):
+    id: UUID
+    title: str
+    description: Optional[str] = None
     submenus_count: int
     dishes_count: int
-    class Config:
-        orm_mode = True
-        
+
+
+class MenuResponse(Menu):
+    id: Optional[int]  # The id is optional in the response

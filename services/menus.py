@@ -7,62 +7,46 @@ from models import core as models
 
 from models import schemas
 from uuid import UUID, uuid4
+from fastapi.encoders import jsonable_encoder  # Import jsonable_encoder
+from fastapi.responses import JSONResponse
+from sqlalchemy import func
+from typing import List, Dict
 
 
 def get_menus(db: Session):
-    menus = db.query(models.Menu).all()
-    for menu in menus:
-        menu.submenus_count = len(menu.submenus)
-        menu.dishes_count = sum(len(submenu.dishes) for submenu in menu.submenus)
-    return menus
+    return db.query(models.Menu).all()
 
-def get_menu(db: Session, menu_id: int):
+def get_menu(db: Session, menu_id: str):
     menu = db.query(models.Menu).filter(models.Menu.id == menu_id).first()
-    if menu:
-        # Calculate the submenus_count and dishes_count
-        submenus_count = len(menu.submenus)
-        dishes_count = sum(len(submenu.dishes) for submenu in menu.submenus)
+    if not menu:
+        raise HTTPException(status_code=404, detail="menu not found")
 
-        # Update the menu object with the calculated counts
-        menu.submenus_count = submenus_count
-        menu.dishes_count = dishes_count
+    # Calculate the count of submenus for the menu
+    submenus_count = db.query(func.count(models.Submenu.id)).filter(models.Submenu.menu_id == menu_id).scalar()
+
+    # Calculate the count of dishes for the menu
+    dishes_count = db.query(func.count(models.Dish.id)).join(models.Submenu).filter(models.Submenu.menu_id == menu_id).scalar()
+
+    # Assign the calculated counts to the menu object
+    menu.submenus_count = submenus_count
+    menu.dishes_count = dishes_count
 
     return menu
 
 
-
-def create_menu_V2(db: Session, menu: schemas.MenuCreate):
-    db_menu = models.Menu(title=menu.title, description=menu.description)
-    db.add(db_menu)
-    db.commit()
-    db.refresh(db_menu)
-
-    # Calculate and set submenus_count
-    db_menu.submenus_count = len(menu.submenus) if menu.submenus else 0
-
-    # Calculate and set dishes_count
-    dishes_count = 0
-    if menu.submenus:
-        for submenu in menu.submenus:
-            dishes_count += len(submenu.dishes) if submenu.dishes else 0
-    db_menu.dishes_count = dishes_count
-
-    db.commit()
-    db.refresh(db_menu)
-    return db_menu
-
-
 def create_menu(db: Session, menu: schemas.MenuCreate):
     db_menu = models.Menu(
-        id=uuid4(),
         title=menu.title,
         description=menu.description,
-        submenus_count=0,
-        dishes_count=0
     )
+
+    
     db.add(db_menu)
     db.commit()
+
+    # Refresh the database object to get the updated submenus_count
     db.refresh(db_menu)
+
     return db_menu
 
 
