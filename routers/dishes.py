@@ -4,29 +4,23 @@ from sqlalchemy.orm import Session
 from typing import List, Dict
 
 from models.database import get_db
-
+from models.database import get_db
+from models import schemas
+from models.core import Dish, Submenu
+from typing import List, Optional
+from uuid import UUID
 from models import core
 
-from typing import List, Optional
 
 from starlette.status import HTTP_200_OK
 from starlette.status import HTTP_201_CREATED
 
 from services import dishes as dish_service
-from models import schemas
-from models import core as models
+
 from fastapi.encoders import jsonable_encoder  # Import the jsonable_encoder function
 from typing import List, Optional
-from uuid import UUID
-
+from models import core as models
 dish_router = APIRouter(prefix='/api/v1/menus')
-
-
-# @dish_router.get("/{menu_id}/submenus/{submenu_id}/dishes/{dish_id}", response_model=schemas.Dish)
-# def get_dish_3(menu_id: UUID, submenu_id: UUID, dish_id: UUID, db: Session = Depends(get_db)):
-#     dish = dish_service.get_dish(db, submenu_id, dish_id)  # Pass submenu_id along with dish_id
-    
-#     return dish
 
 
 @dish_router.post("/{menu_id}/submenus/{submenu_id}/dishes", response_model=schemas.Dish, status_code=201)
@@ -41,13 +35,8 @@ def update_dish(
     submenu_id: Optional[UUID] = None,
     dish_id: Optional[UUID] = None
 ):
-    # if submenu_id is None or dish_id is None:
-    #     # Handle the case when either submenu_id or dish_id is None (null)
-    #     # You can raise an HTTPException or handle it based on your application logic.
-    #     raise HTTPException(status_code=422, detail="Submenu_id or dish_id cannot be null")
 
     return dish_service.update_dish(db, dish_id, dish_update)
-
 
 
 

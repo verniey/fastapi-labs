@@ -33,6 +33,8 @@ class Submenu(Base):
     menu = relationship("Menu", back_populates="submenus")
     dishes = relationship("Dish", back_populates="submenu", cascade="all, delete")
 
+    
+
 
 class Dish(Base):
     __tablename__ = "dishes"
@@ -45,14 +47,14 @@ class Dish(Base):
     submenu = relationship("Submenu", back_populates="dishes")
 
 
-@event.listens_for(Submenu.dishes, "append")
-@event.listens_for(Submenu.dishes, "remove")
-def update_dishes_count(target, value, initiator):
-    target.dishes_count = len(target.dishes)
+# @event.listens_for(Submenu.dishes, "append")
+# @event.listens_for(Submenu.dishes, "remove")
+# def update_dishes_count(target, value, initiator):
+#     target.dishes_count = len(target.dishes)
 
 
-@event.listens_for(Menu.submenus, "append")
-@event.listens_for(Menu.submenus, "remove")
-def update_submenus_count(target, value, initiator):
-    target.submenus_count = len(target.submenus)
-    target.dishes_count = sum(len(submenu.dishes) for submenu in target.submenus)
+# @event.listens_for(Menu.submenus, "append")
+# @event.listens_for(Menu.submenus, "remove")
+# def update_submenus_count(target, value, initiator):
+#     target.submenus_count = len(target.submenus)
+#     target.dishes_count = sum(len(submenu.dishes) for submenu in target.submenus)

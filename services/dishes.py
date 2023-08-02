@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from starlette.status import HTTP_400_BAD_REQUEST
@@ -9,11 +8,17 @@ from fastapi.encoders import jsonable_encoder  # Import jsonable_encoder
 
 from models import schemas
 
-from services import menus as menu_service
 
-from uuid import UUID
-from typing import List, Optional
 from decimal import Decimal
+
+#----
+from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Optional
+from uuid import UUID
+
+from models.database import get_db
+from models import schemas
+from services import menus as menu_service
 
 
 # def get_dishes_2(db: Session, submenu_id: UUID) -> List[schemas.Dish]:
@@ -30,20 +35,8 @@ def get_dishes(db: Session, submenu_id: UUID):
 
 def get_dish(db: Session, submenu_id: UUID, dish_id: UUID):
     dish = db.query(models.Dish).filter(models.Dish.submenu_id == submenu_id, models.Dish.id == dish_id).first()
-    # if not dish:
-    #     return None
-    
-    # return {
-    #     "id": dish.id,
-    #     "title": dish.title,
-    #     "description": dish.description,
-    #     "price": "{:.2f}".format(dish.price)  # Format price with two decimal places
-    # }
 
     return dish
-
-
-
 
 def create_dish(db: Session, dish: schemas.DishCreate, submenu_id: UUID):
     db_dish = models.Dish(
@@ -56,8 +49,6 @@ def create_dish(db: Session, dish: schemas.DishCreate, submenu_id: UUID):
     db.commit()
     db.refresh(db_dish)
     return db_dish
-
-
 
 
 def update_dish(db: Session, dish_id: UUID, dish_update: schemas.DishUpdate):

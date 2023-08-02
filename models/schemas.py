@@ -35,6 +35,11 @@ class SubmenuCreate(SubmenuBase):
 class Submenu(SubmenuBase):
     id: UUID   
     dishes_count: int = 0
+    
+    class Config:
+        orm_mode = True
+        #exclude = ("dishes",)  # Exclude the 'dishes' field from the response
+
 
 class SubmenuUpdate(BaseModel):
     title: str

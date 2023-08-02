@@ -16,10 +16,9 @@ from typing import List, Dict
 def get_menus(db: Session):
     return db.query(models.Menu).all()
 
-def get_menu(db: Session, menu_id: str):
+def get_menu(db: Session, menu_id: UUID):
     menu = db.query(models.Menu).filter(models.Menu.id == menu_id).first()
-    if not menu:
-        raise HTTPException(status_code=404, detail="menu not found")
+    if not menu: return None
 
     # Calculate the count of submenus for the menu
     submenus_count = db.query(func.count(models.Submenu.id)).filter(models.Submenu.menu_id == menu_id).scalar()
@@ -43,6 +42,7 @@ def create_menu(db: Session, menu: schemas.MenuCreate):
     
     db.add(db_menu)
     db.commit()
+    db.flush()  # Use flush() to synchronize the object with the database, but don't commit
 
     # Refresh the database object to get the updated submenus_count
     db.refresh(db_menu)
@@ -50,7 +50,7 @@ def create_menu(db: Session, menu: schemas.MenuCreate):
     return db_menu
 
 
-def update_menu(db: Session, menu_id: int, menu_update: schemas.MenuUpdate):
+def update_menu(db: Session, menu_id: UUID, menu_update: schemas.MenuUpdate):
     db_menu = db.query(models.Menu).filter(models.Menu.id == menu_id).first()
     if db_menu:
         db_menu.title = menu_update.title
@@ -61,7 +61,7 @@ def update_menu(db: Session, menu_id: int, menu_update: schemas.MenuUpdate):
     return None
 
 
-def delete_menu(db: Session, menu_id: int):
+def delete_menu(db: Session, menu_id: UUID):
     db_menu = db.query(models.Menu).filter(models.Menu.id == menu_id).first()
     if db_menu:
         db.delete(db_menu)
