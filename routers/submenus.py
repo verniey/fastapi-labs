@@ -39,11 +39,7 @@ def get_submenu(menu_id: UUID, submenu_id: Optional[UUID]=None, db: Session = De
 @submenu_router.post("/{menu_id}/submenus", response_model=schemas.Submenu, status_code=HTTP_201_CREATED)
 def post_submenu(menu_id: UUID, submenu: schemas.SubmenuCreate, db: Session = Depends(get_db)):
     submenu = submenu_service.create_submenu(db, submenu, menu_id)
-    if submenu is None:
-        raise HTTPException(status_code=404, detail="menu not found")
-
-    
-    return 
+    return submenu
 
 
 @submenu_router.patch("/{menu_id}/submenus/{submenu_id}", response_model=schemas.Submenu)
