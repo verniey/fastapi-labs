@@ -1,4 +1,4 @@
-
+project repo:
 # Restaurant Menu System
 
 This project implements a system for managing menus, submenus, and dishes for a restaurant. It allows creating, updating, and querying menus, submenus, and dishes, while maintaining the required dependencies and constraints.
@@ -39,16 +39,23 @@ The project involves three main entities:
 
 - The database should be empty at the start of the test scenario.
 
+
 ## Setup
 
-1. Clone this repository to your local machine.
-2. Install the required Python packages and dependencies using pip-tools:
+1. Clone the repository: `git clone https://github.com/verniey/fastapi-labs`
+2. Navigate to the project directory: `cd project`
+3. Install pip-tools: `pip install pip-tools`
+4. Compile requirements: `pip-compile requirements.in`
+5. Sync packages: `pip-sync`
+------
 
-   ```bash
-   pip install pip-tools
-   pip-compile
-   pip-sync
+## Database Configuration
 
-3. Set up the PostgreSQL database by modifying the SQLALCHEMY_DATABASE_URL in your environment configuration or directly in the code.
+Set up the PostgreSQL database by modifying the SQLALCHEMY_DATABASE_URL in your environment configuration or directly in the code.
 
-3. Start the application `uvicorn main:app --reload`
+```python
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/task1"
+
+## Getting Started
+
+Start the application `uvicorn main:app --reload`
