@@ -4,16 +4,9 @@ from starlette.status import HTTP_400_BAD_REQUEST
 
 from models import core as models
 from fastapi.responses import JSONResponse
-from fastapi.encoders import jsonable_encoder  # Import jsonable_encoder
 
 from models import schemas
 
-
-from decimal import Decimal
-
-#----
-from fastapi import APIRouter, Depends, HTTPException
-from typing import List, Optional
 from uuid import UUID
 
 from models.database import get_db
@@ -21,16 +14,9 @@ from models import schemas
 from services import menus as menu_service
 
 
-# def get_dishes_2(db: Session, submenu_id: UUID) -> List[schemas.Dish]:
-#     return [schemas.Dish.from_orm(dish) for dish in db.query(models.Dish).filter(models.Dish.submenu_id == submenu_id).all()]
-
 def get_dishes(db: Session, submenu_id: UUID):
     dishes = db.query(models.Dish).filter(models.Dish.submenu_id == submenu_id).all()
-    
     return dishes
-
-# def get_dish_8(db: Session, submenu_id: UUID, dish_id: UUID):
-#     return db.query(models.Dish).filter(models.Dish.submenu_id == submenu_id, models.Dish.id == dish_id).first()
 
 
 def get_dish(db: Session, submenu_id: UUID, dish_id: UUID):
