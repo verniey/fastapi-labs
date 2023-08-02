@@ -44,7 +44,7 @@ The project involves three main entities:
 
 1. Clone the repository: `git clone https://github.com/verniey/fastapi-labs`
 2. Navigate to the project directory: `cd project`
-3. Create vertual enviroment `python -m venv venv`  and activate a virtual environment `source venv/bin/activate`(recommended).
+3. Create vertual enviroment `python3 -m venv venv`  and activate a virtual environment `source venv/bin/activate`(recommended).
 3. Install pip-tools: `pip install pip-tools`
 4. Compile requirements: `pip-compile requirements.in`
 5. Sync packages: `pip-sync`
@@ -57,6 +57,11 @@ Set up the PostgreSQL database by modifying the SQLALCHEMY_DATABASE_URL in your 
 ```python
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/task1"
 
+
 ## Getting Started
 
 Start the application `uvicorn main:app --reload`
+
+## Additional Information
+all CRUD tests passed(186)
+Failed(8) api 
