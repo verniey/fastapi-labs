@@ -25,4 +25,5 @@ archive.zip
 *~
 .*.sw?
 .cache
-.requirements.txt
+
+requirements.txt
