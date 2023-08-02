@@ -44,6 +44,7 @@ The project involves three main entities:
 
 1. Clone the repository: `git clone https://github.com/verniey/fastapi-labs`
 2. Navigate to the project directory: `cd project`
+3. Create vertual enviroment `python -m venv venv`  and activate a virtual environment `source venv/bin/activate`(recommended).
 3. Install pip-tools: `pip install pip-tools`
 4. Compile requirements: `pip-compile requirements.in`
 5. Sync packages: `pip-sync`
