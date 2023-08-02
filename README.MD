@@ -55,13 +55,11 @@ The project involves three main entities:
 Set up the PostgreSQL database by modifying the SQLALCHEMY_DATABASE_URL in your environment configuration or directly in the code.
 
 ```python
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/task1"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/task1" ```
+
 
 
 ## Getting Started
 
 Start the application `uvicorn main:app --reload`
 
-## Additional Information
-all CRUD tests passed(186)
-Failed(8) api 
