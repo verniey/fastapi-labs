@@ -56,9 +56,7 @@ Set up the PostgreSQL database by modifying the SQLALCHEMY_DATABASE_URL in your 
 
 ```python
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/task1"
-
-
----
+```
 
 
 ## Getting Started
